@@ -53,7 +53,7 @@
                         break;
                     case "6":
                         Console.Clear();
-                        //displayAllCoursesAndTheirStudents();
+                        displayAllCoursesAndTheirStudents();
                         break;
                     case "7":
                         Console.Clear();
@@ -469,6 +469,50 @@
                 }
             }
         }
+        static void displayAllCoursesAndTheirStudents()
+        {
+            try
+            {
+                Console.WriteLine(":::::: Display All Courses and Their Students ::::::");
+
+                // Check if there are any courses in the system
+                if (courses.Count == 0)
+                {
+                    Console.WriteLine("No courses available.");
+                    return;
+                }
+
+                // Iterate through each course in the dictionary
+                foreach (var course in courses)
+                {
+                    string courseCode = course.Key;
+                    var students = course.Value;
+
+                    // Display the course code
+                    Console.WriteLine($"\nCourse: {courseCode}");
+
+                    // Check if the course has any students enrolled
+                    if (students.Count == 0)
+                    {
+                        Console.WriteLine("  No students enrolled.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("  Enrolled Students:");
+                        foreach (var student in students)
+                        {
+                            Console.WriteLine($"  - {student}");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Catch any unexpected errors
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+
 
     }
 }
