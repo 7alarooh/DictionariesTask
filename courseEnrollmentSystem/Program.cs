@@ -222,56 +222,78 @@
         }
         static void EnrollStudentInCourse() 
         {
-            Console.WriteLine(":::::: Enroll Student in Course ::::::");
-            DisplayCourses(); // Display available courses
-
-            // Get the student's name
-            Console.WriteLine("Enter the student's name:");
-            string studentName = Console.ReadLine();
-
-            if (string.IsNullOrWhiteSpace(studentName))
+            bool continuereEnrollStuden = true;
+            while (continuereEnrollStuden)
             {
-                Console.WriteLine("Error: Student name cannot be empty.");
-                return;
-            }
+                try
+                {
+                    Console.WriteLine(":::::: Enroll Student in Course ::::::");
+                    DisplayCourses(); // Display available courses
 
-            // Get the course code
-            Console.WriteLine("Enter the course code (e.g., CS101):");
-            string courseCode = Console.ReadLine().ToUpper(); // Convert to uppercase
+                    // Get the student's name
+                    Console.WriteLine("Enter the student's name:");
+                    string studentName = Console.ReadLine();
 
-            // Error handling for empty or null course code
-            if (string.IsNullOrWhiteSpace(courseCode))
-            {
-                Console.WriteLine("Error: Course code cannot be empty.");
-                return;
-            }
+                    if (string.IsNullOrWhiteSpace(studentName))
+                    {
+                        Console.WriteLine("Error: Student name cannot be empty.");
+                        return;
+                    }
 
-            // Check if the course exists
-            if (!courses.ContainsKey(courseCode))
-            {
-                Console.WriteLine($"Error: Course '{courseCode}' does not exist.");
-                return;
-            }
+                    // Get the course code
+                    Console.WriteLine("Enter the course code (e.g., CS101):");
+                    string courseCode = Console.ReadLine().ToUpper(); // Convert to uppercase
 
-            // Check if the student is already enrolled in the course
-            if (courses[courseCode].Contains(studentName))
-            {
-                Console.WriteLine($"Error: Student '{studentName}' is already enrolled in course '{courseCode}'.");
-                return;
-            }
+                    // Error handling for empty or null course code
+                    if (string.IsNullOrWhiteSpace(courseCode))
+                    {
+                        Console.WriteLine("Error: Course code cannot be empty.");
+                        return;
+                    }
 
-            // Check if the course has reached its capacity
-            if (courses[courseCode].Count >= courseCapacities[courseCode])
-            {
-                // Add the student to the waitlist if the course is full
-                WaitList.Add((studentName, courseCode));
-                Console.WriteLine($"Course '{courseCode}' is full. Student '{studentName}' has been added to the waitlist.");
-            }
-            else
-            {
-                // Enroll the student in the course
-                courses[courseCode].Add(studentName);
-                Console.WriteLine($"Student '{studentName}' has been enrolled in course '{courseCode}' successfully.");
+                    // Check if the course exists
+                    if (!courses.ContainsKey(courseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{courseCode}' does not exist.");
+                        return;
+                    }
+
+                    // Check if the student is already enrolled in the course
+                    if (courses[courseCode].Contains(studentName))
+                    {
+                        Console.WriteLine($"Error: Student '{studentName}' is already enrolled in course '{courseCode}'.");
+                        return;
+                    }
+
+                    // Check if the course has reached its capacity
+                    if (courses[courseCode].Count >= courseCapacities[courseCode])
+                    {
+                        // Add the student to the waitlist if the course is full
+                        WaitList.Add((studentName, courseCode));
+                        Console.WriteLine($"Course '{courseCode}' is full. Student '{studentName}' has been added to the waitlist.");
+                    }
+                    else
+                    {
+                        // Enroll the student in the course
+                        courses[courseCode].Add(studentName);
+                        Console.WriteLine($"Student '{studentName}' has been enrolled in course '{courseCode}' successfully.");
+                    }
+                    // Ask if the user wants to remove another course or return to the main menu
+                    Console.WriteLine("Do you want to continue ? (yes/no)");
+                    string input = Console.ReadLine()?.ToLower();
+
+                    if (input != "yes")
+                    {
+                        continuereEnrollStuden = false;
+                        Console.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+
             }
         }
 
