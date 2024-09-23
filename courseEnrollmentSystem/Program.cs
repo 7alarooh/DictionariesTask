@@ -240,6 +240,13 @@
                     Console.WriteLine(":::::: Enroll Student in Course ::::::");
                     DisplayCourses(); // Display available courses
 
+                    // Check if there are any courses available
+                    if (courses.Count == 0)
+                    {
+                        Console.WriteLine("No courses are available at the moment.");
+                        return; // End function if no courses are available
+                    }
+
                     string studentName;
                     // Get the student's name with error handling
                     while (true)
@@ -343,6 +350,7 @@
                 }
             }
         }
+
         static void removeStudentFromCourse()
         {
             bool continueRemoving = true;
