@@ -33,7 +33,7 @@
                 {
                     case "1":
                         Console.Clear();
-                        //addNewCourse();
+                        addNewCourse();
                         break;
                     case "2":
                         Console.Clear();
@@ -64,18 +64,76 @@
                         //withdrawStudentFromAllCourses();
                         break;
                     case "0":
-                        Console.WriteLine("\npress Enter key to exit out system");
-                        string outsystem = Console.ReadLine();
                         ExitFlag = true;
                         break;
                     default:
                         Console.WriteLine("Sorry your choice was wrong !!");
                         break;
                 }
-                Console.WriteLine("press Enter key to continue");
-                string cont = Console.ReadLine();
                 Console.Clear();
             } while (ExitFlag != true);
+        }
+        static void addNewCourse()
+        {
+            bool continueAdding = true;
+            while (continueAdding)
+            {   
+                Console.Clear() ;
+                Console.WriteLine(":::::: Add New Course ::::::");
+                DisplayCourses();
+                Console.WriteLine("Enter the course code (e.g., CS101):");
+                string courseCode = Console.ReadLine();
+                // Error handling for empty or null course code
+                if (string.IsNullOrWhiteSpace(courseCode))
+                {
+                    Console.WriteLine("Error: Course code cannot be empty.");
+                    return;
+                }
+                try
+                {
+                    // Check if the course code already exists
+                    if (courses.ContainsKey(courseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{courseCode}' already exists.");
+                    }
+                    else
+                    {
+                        // Add the new course code to the dictionary
+                        courses[courseCode] = new HashSet<string>();
+                        Console.WriteLine($"Course '{courseCode}' has been added successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+                // Ask if the user wants to add another course or return to the main menu
+                Console.WriteLine("Do you want to add another course? (yes/no)");
+                string input = Console.ReadLine()?.ToLower();
+
+                if (input != "yes")
+                {
+                    continueAdding = false;
+                    Console.Clear();
+                }
+
+            }
+        }
+        static void DisplayCourses()
+        {
+            Console.WriteLine("\n--- All Courses ---");
+            if (courses.Count == 0)
+            {
+                Console.WriteLine("No courses available.");
+            }
+            else
+            {
+                foreach (var course in courses)
+                {
+                    Console.WriteLine($"Course: {course.Key}, Students Enrolled: {course.Value.Count}");
+                }
+            }
         }
     }
 }
