@@ -61,7 +61,7 @@
                         break;
                     case "8":
                         Console.Clear();
-                        //withdrawStudentFromAllCourses();
+                        withdrawStudentFromAllCourses();
                         break;
                     case "0":
                         ExitFlag = true;
@@ -222,8 +222,8 @@
         }
         static void EnrollStudentInCourse() 
         {
-            bool continuereEnrollStuden = true;
-            while (continuereEnrollStuden)
+            bool continueEnrollStuden = true;
+            while (continueEnrollStuden)
             {
                 try
                 {
@@ -288,13 +288,13 @@
                             Console.WriteLine($"Student '{studentName}' has been enrolled in course '{courseCode}' successfully.");
                         }
                     }
-                    // Ask if the user wants to remove another course or return to the main menu
+                    // Ask if the user wants to enroll student in Course or return to the main menu
                     Console.WriteLine("Do you want to continue ? (y/n)");
                     string input = Console.ReadLine()?.ToLower();
 
                     if (input != "y")
                     {
-                        continuereEnrollStuden = false;
+                        continueEnrollStuden = false;
                         Console.Clear();
                     }
                 }
@@ -390,7 +390,7 @@
                         Console.WriteLine($"Student '{studentName}' was not removed from course '{courseCode}'.");
                     }
 
-                    // Ask if the user wants to continue removing students or return to the main menu
+                    // Ask if the user wants to continue removing student or return to the main menu
                     Console.WriteLine("Do you want to continue removing students? (y/n)");
                     string input = Console.ReadLine()?.ToLower();
 
@@ -514,8 +514,8 @@
         }
         static void findCoursesWithCommonStudents()
         {
-            bool continuereFind = true;
-            while (continuereFind)
+            bool continueFind = true;
+            while (continueFind)
             {
                 try
                 {
@@ -576,13 +576,68 @@
                     {
                         Console.WriteLine("No students are enrolled in both courses.");
                     }
-                    // Ask if the user wants to remove another course or return to the main menu
+                    // Ask if the user wants to find Courses With Common Students  or return to the main menu
                     Console.WriteLine("Do you want to continue ? (y/n)");
                     string input = Console.ReadLine()?.ToLower();
 
                     if (input != "y")
                     {
-                        continuereFind = false;
+                        continueFind = false;
+                        Console.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+            }
+        }
+        static void withdrawStudentFromAllCourses()
+        {
+            bool continueWithdraw = true;
+            while (continueWithdraw)
+            {
+                try
+                {
+                    Console.WriteLine(":::::: Withdraw Student from All Courses ::::::");
+
+                    // Get the student's name
+                    Console.WriteLine("Enter the student's name:");
+                    string studentName = Console.ReadLine();
+
+                    // Error handling for empty or null student name
+                    if (string.IsNullOrWhiteSpace(studentName))
+                    {
+                        Console.WriteLine("Error: Student name cannot be empty.");
+                        return;
+                    }
+
+                    // Flag to check if the student was found in any course
+                    bool studentFound = false;
+
+                    // Iterate over all courses and remove the student from each course they are enrolled in
+                    foreach (var course in courses)
+                    {
+                        if (course.Value.Contains(studentName)) // Check if the student is enrolled in the course
+                        {
+                            course.Value.Remove(studentName); // Remove the student from the course
+                            Console.WriteLine($"Student '{studentName}' has been withdrawn from course '{course.Key}'.");
+
+                            studentFound = true;
+                        }
+                    }
+
+                    if (!studentFound)
+                    {
+                        Console.WriteLine($"Student '{studentName}' is not enrolled in any course.");
+                    }
+                    Console.WriteLine("Do you want to continue ? (y/n)");
+                    string input = Console.ReadLine()?.ToLower();
+
+                    if (input != "y")
+                    {
+                        continueWithdraw = false;
                         Console.Clear();
                     }
                 }
