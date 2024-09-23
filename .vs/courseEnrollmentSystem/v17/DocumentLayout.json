@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Lenovo\\source\\repos\\courseEnrollmentSystem\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1D729D0A-BA48-4202-9788-4A4020C2646A}|courseEnrollmentSystem\\courseEnrollmentSystem.csproj|c:\\users\\lenovo\\source\\repos\\courseenrollmentsystem\\courseenrollmentsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1D729D0A-BA48-4202-9788-4A4020C2646A}|courseEnrollmentSystem\\courseEnrollmentSystem.csproj|solutionrelative:courseenrollmentsystem\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Lenovo\\source\\repos\\courseEnrollmentSystem\\courseEnrollmentSystem\\Program.cs",
+              "RelativeDocumentMoniker": "courseEnrollmentSystem\\Program.cs",
+              "ToolTip": "C:\\Users\\Lenovo\\source\\repos\\courseEnrollmentSystem\\courseEnrollmentSystem\\Program.cs",
+              "RelativeToolTip": "courseEnrollmentSystem\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T05:41:51.261Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
