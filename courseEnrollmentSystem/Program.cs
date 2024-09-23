@@ -10,7 +10,6 @@
         {
             mainMenu();
         }
-
         static void mainMenu() 
         {
             bool ExitFlag = false;
@@ -79,25 +78,19 @@
             bool continueAdding = true;
             while (continueAdding)
             {   
-                Console.Clear() ;
-                Console.WriteLine(":::::: Add New Course ::::::");
-                DisplayCourses();
-                Console.WriteLine("Enter the course code (e.g., CS101):");
-                string courseCode = Console.ReadLine().ToUpper();
-                // Error handling for empty or null course code
-                if (string.IsNullOrWhiteSpace(courseCode))
-                {
-                    Console.WriteLine("Error: Course code cannot be empty.");
-                    return;
-                }
-                Console.WriteLine("Enter the course capacity:");
-                if (!int.TryParse(Console.ReadLine(), out int capacity) || capacity <= 0)
-                {
-                    Console.WriteLine("Error: Please enter a valid capacity.");
-                    return;
-                }
                 try
                 {
+                    Console.Clear();
+                    Console.WriteLine(":::::: Add New Course ::::::");
+                    DisplayCourses();
+                    Console.WriteLine("Enter the course code (e.g., CS101):");
+                    string courseCode = Console.ReadLine().ToUpper();
+                    // Error handling for empty or null course code
+                    if (string.IsNullOrWhiteSpace(courseCode))
+                    {
+                        Console.WriteLine("Error: Course code cannot be empty.");
+                        return;
+                    }
                     // Check if the course code already exists
                     if (courses.ContainsKey(courseCode))
                     {
@@ -105,10 +98,27 @@
                     }
                     else
                     {
-                        // Add the new course code to the dictionary
-                        courses[courseCode] = new HashSet<string>(); 
-                        courseCapacities[courseCode] = capacity; // Store the course capacity
-                        Console.WriteLine($"Course '{courseCode}' has been added successfully.");
+                        Console.WriteLine("Enter the course capacity:");
+                        if (!int.TryParse(Console.ReadLine(), out int capacity) || capacity <= 0)
+                        {
+                            Console.WriteLine("Error: Please enter a valid capacity.");
+                            return;
+                        }
+                        // Ask for confirmation before adding the course
+                        Console.WriteLine($"You are about to add the course '{courseCode}' with a capacity of {capacity}. Are you sure? (Y/N)");
+                        string confirmation = Console.ReadLine().ToUpper();
+
+                        // If confirmed, add the course
+                        if (confirmation == "Y")
+                        {
+                            courses[courseCode] = new HashSet<string>();
+                            courseCapacities[courseCode] = capacity; // Store the course capacity
+                            Console.WriteLine($"Course '{courseCode}' has been added successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Action cancelled. Course was not added.");
+                        }
                     }
                 }
                 catch (Exception ex)
