@@ -4,6 +4,7 @@
     {
         static Dictionary<string, HashSet<string>> courses = new Dictionary<string, HashSet<string>>();// Dictionary to store courses and enrolled students
         static List<(string studentName, string courseCode)> WaitList = new List<(string, string)>();// Waitlist to store students who are waiting to enroll in a full course
+        static Dictionary<string, int> courseCapacities = new Dictionary<string, int>(); // Dictionary to store course capacities
 
         static void Main(string[] args)
         {
@@ -41,7 +42,7 @@
                         break;
                     case "3":
                         Console.Clear();
-                        //EnrollStudentInCourse();
+                        EnrollStudentInCourse();
                         break;
                     case "4":
                         Console.Clear();
@@ -89,6 +90,12 @@
                     Console.WriteLine("Error: Course code cannot be empty.");
                     return;
                 }
+                Console.WriteLine("Enter the course capacity:");
+                if (!int.TryParse(Console.ReadLine(), out int capacity) || capacity <= 0)
+                {
+                    Console.WriteLine("Error: Please enter a valid capacity.");
+                    return;
+                }
                 try
                 {
                     // Check if the course code already exists
@@ -99,7 +106,8 @@
                     else
                     {
                         // Add the new course code to the dictionary
-                        courses[courseCode] = new HashSet<string>();
+                        courses[courseCode] = new HashSet<string>(); 
+                        courseCapacities[courseCode] = capacity; // Store the course capacity
                         Console.WriteLine($"Course '{courseCode}' has been added successfully.");
                     }
                 }
@@ -188,6 +196,60 @@
                     continueremoving = false;
                     Console.Clear();
                 }
+            }
+        }
+        static void EnrollStudentInCourse() 
+        {
+            Console.WriteLine(":::::: Enroll Student in Course ::::::");
+            DisplayCourses(); // Display available courses
+
+            // Get the student's name
+            Console.WriteLine("Enter the student's name:");
+            string studentName = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(studentName))
+            {
+                Console.WriteLine("Error: Student name cannot be empty.");
+                return;
+            }
+
+            // Get the course code
+            Console.WriteLine("Enter the course code (e.g., CS101):");
+            string courseCode = Console.ReadLine().ToUpper(); // Convert to uppercase
+
+            // Error handling for empty or null course code
+            if (string.IsNullOrWhiteSpace(courseCode))
+            {
+                Console.WriteLine("Error: Course code cannot be empty.");
+                return;
+            }
+
+            // Check if the course exists
+            if (!courses.ContainsKey(courseCode))
+            {
+                Console.WriteLine($"Error: Course '{courseCode}' does not exist.");
+                return;
+            }
+
+            // Check if the student is already enrolled in the course
+            if (courses[courseCode].Contains(studentName))
+            {
+                Console.WriteLine($"Error: Student '{studentName}' is already enrolled in course '{courseCode}'.");
+                return;
+            }
+
+            // Check if the course has reached its capacity
+            if (courses[courseCode].Count >= courseCapacities[courseCode])
+            {
+                // Add the student to the waitlist if the course is full
+                WaitList.Add((studentName, courseCode));
+                Console.WriteLine($"Course '{courseCode}' is full. Student '{studentName}' has been added to the waitlist.");
+            }
+            else
+            {
+                // Enroll the student in the course
+                courses[courseCode].Add(studentName);
+                Console.WriteLine($"Student '{studentName}' has been enrolled in course '{courseCode}' successfully.");
             }
         }
 
