@@ -167,6 +167,7 @@
             bool continueremoving = true;
             while (continueremoving)
             {
+                Console.Clear();
                 Console.WriteLine(":::::: Remove Course ::::::");
                 DisplayCourses(); // Show current courses
 
