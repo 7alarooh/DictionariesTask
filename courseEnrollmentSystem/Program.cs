@@ -49,7 +49,7 @@
                         break;
                     case "5":
                         Console.Clear();
-                        //displayAllStudentsInCourse();
+                        displayAllStudentsInCourse();
                         break;
                     case "6":
                         Console.Clear();
@@ -127,10 +127,10 @@
                     Console.WriteLine($"An error occurred: {ex.Message}");
                 }
                 // Ask if the user wants to add another course or return to the main menu
-                Console.WriteLine("Do you want to add another course? (yes/no)");
+                Console.WriteLine("Do you want to add another course? (y/n)");
                 string input = Console.ReadLine()?.ToLower();
 
-                if (input != "yes")
+                if (input != "y")
                 {
                     continueAdding = false;
                     Console.Clear();
@@ -210,10 +210,10 @@
                     Console.WriteLine($"An error occurred: {ex.Message}");
                 }
                 // Ask if the user wants to remove another course or return to the main menu
-                Console.WriteLine("Do you want to remove another course? (yes/no)");
+                Console.WriteLine("Do you want to remove another course? (y/n)");
                 string input = Console.ReadLine()?.ToLower();
 
-                if (input != "yes")
+                if (input != "y")
                 {
                     continueremoving = false;
                     Console.Clear();
@@ -366,10 +366,10 @@
 
                     // Check if the course now has space for students on the waitlist
                     // Ask for confirmation before removing the student
-                    Console.WriteLine($"Are you sure you want to remove student '{studentName}' from course '{courseCode}'? (yes/no)");
+                    Console.WriteLine($"Are you sure you want to remove student '{studentName}' from course '{courseCode}'? (y/no)");
                     string confirmation = Console.ReadLine()?.ToLower();
 
-                    if (confirmation == "yes")
+                    if (confirmation == "y")
                     {
                         // Remove the student from the course
                         courses[courseCode].Remove(studentName);
@@ -391,10 +391,10 @@
                     }
 
                     // Ask if the user wants to continue removing students or return to the main menu
-                    Console.WriteLine("Do you want to continue removing students? (yes/no)");
+                    Console.WriteLine("Do you want to continue removing students? (y/n)");
                     string input = Console.ReadLine()?.ToLower();
 
-                    if (input != "yes")
+                    if (input != "y")
                     {
                         continueRemoving = false;
                         Console.Clear();
@@ -407,7 +407,68 @@
                 }
             }
         }
+        static void displayAllStudentsInCourse() {
+            bool continueDisplaying = true;
+            while (continueDisplaying)
+            {
+                try
+                {
+                    Console.WriteLine(":::::: Display All Students in a Course ::::::");
+                    DisplayCourses(); // Show available courses to choose from
 
+                    // Get the course code from the user
+                    string courseCode;
+                    while (true)
+                    {
+                        Console.WriteLine("Enter the course code (e.g., CS101):");
+                        courseCode = Console.ReadLine()?.ToUpper(); // Convert to uppercase
+
+                        if (!string.IsNullOrWhiteSpace(courseCode))
+                        {
+                            break; // Valid input, exit the loop
+                        }
+
+                        Console.WriteLine("Error: Course code cannot be empty. Please try again.");
+                    }
+
+                    // Check if the course exists
+                    if (!courses.ContainsKey(courseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{courseCode}' does not exist. Please try again.");
+                        continue; // Loop back to retry input
+                    }
+
+                    // Check if the course has any students enrolled
+                    if (courses[courseCode].Count == 0)
+                    {
+                        Console.WriteLine($"Course '{courseCode}' has no students enrolled.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"\nStudents enrolled in course '{courseCode}':");
+                        foreach (var student in courses[courseCode])
+                        {
+                            Console.WriteLine($"- {student}");
+                        }
+                    }
+
+                    // Ask if the user wants to display students from another course or return to the main menu
+                    Console.WriteLine("\nDo you want to display students for another course? (y/n)");
+                    string input = Console.ReadLine()?.ToLower();
+
+                    if (input != "y")
+                    {
+                        continueDisplaying = false;
+                        Console.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}. Please try again.");
+                }
+            }
+        }
 
     }
 }
