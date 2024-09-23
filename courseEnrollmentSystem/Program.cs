@@ -230,10 +230,10 @@
                 }
             }
         }
-        static void EnrollStudentInCourse() 
+        static void EnrollStudentInCourse()
         {
-            bool continueEnrollStuden = true;
-            while (continueEnrollStuden)
+            bool continueEnrollStudent = true;
+            while (continueEnrollStudent)
             {
                 try
                 {
@@ -256,11 +256,28 @@
                         }
                     }
 
+                    // Display the courses the student is already enrolled in
+                    Console.WriteLine($"Courses that '{studentName}' is currently enrolled in:");
+                    bool studentEnrolledInAnyCourse = false;
+                    foreach (var course in courses)
+                    {
+                        if (course.Value.Contains(studentName))
+                        {
+                            Console.WriteLine($"Course: {course.Key}");
+                            studentEnrolledInAnyCourse = true;
+                        }
+                    }
+
+                    if (!studentEnrolledInAnyCourse)
+                    {
+                        Console.WriteLine($"{studentName} is not enrolled in any course.");
+                    }
+
                     string courseCode;
                     // Get the course code with error handling
                     while (true)
                     {
-                        Console.WriteLine("Enter the course code (e.g., CS101):");
+                        Console.WriteLine("Enter the course code to enroll the student (e.g., CS101):");
                         courseCode = Console.ReadLine()?.ToUpper(); // Convert to uppercase
 
                         if (string.IsNullOrWhiteSpace(courseCode))
@@ -280,7 +297,17 @@
                     // Check if the student is already enrolled in the course
                     if (courses[courseCode].Contains(studentName))
                     {
-                        Console.WriteLine($"Error: Student '{studentName}' is already enrolled in course '{courseCode}'.");
+                        Console.WriteLine($"Student '{studentName}' is already enrolled in course '{courseCode}'.");
+
+                        // Ask the user if they want to remove the student from the course
+                        Console.WriteLine("Do you want to remove this student from the course? (y/n)");
+                        string removeInput = Console.ReadLine()?.ToLower();
+
+                        if (removeInput == "y")
+                        {
+                            courses[courseCode].Remove(studentName);
+                            Console.WriteLine($"Student '{studentName}' has been removed from course '{courseCode}' successfully.");
+                        }
                     }
                     else
                     {
@@ -298,13 +325,14 @@
                             Console.WriteLine($"Student '{studentName}' has been enrolled in course '{courseCode}' successfully.");
                         }
                     }
-                    // Ask if the user wants to enroll student in Course or return to the main menu
-                    Console.WriteLine("Do you want to continue ? (y/n)");
+
+                    // Ask if the user wants to continue enrolling students
+                    Console.WriteLine("Do you want to continue enrolling students in courses? (y/n)");
                     string input = Console.ReadLine()?.ToLower();
 
                     if (input != "y")
                     {
-                        continueEnrollStuden = false;
+                        continueEnrollStudent = false;
                         Console.Clear();
                     }
                 }
@@ -313,9 +341,9 @@
                     // Catch any unexpected errors
                     Console.WriteLine($"An error occurred: {ex.Message}");
                 }
-
             }
         }
+
         static void removeStudentFromCourse()
         {
             bool continueRemoving = true;
