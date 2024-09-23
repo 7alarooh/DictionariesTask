@@ -37,7 +37,7 @@
                         break;
                     case "2":
                         Console.Clear();
-                        //removeCourse();
+                        removeCourse();
                         break;
                     case "3":
                         Console.Clear();
@@ -82,7 +82,7 @@
                 Console.WriteLine(":::::: Add New Course ::::::");
                 DisplayCourses();
                 Console.WriteLine("Enter the course code (e.g., CS101):");
-                string courseCode = Console.ReadLine();
+                string courseCode = Console.ReadLine().ToUpper();
                 // Error handling for empty or null course code
                 if (string.IsNullOrWhiteSpace(courseCode))
                 {
@@ -135,5 +135,61 @@
                 }
             }
         }
+        static void removeCourse()
+        {
+            bool continueremoving = true;
+            while (continueremoving)
+            {
+                Console.WriteLine(":::::: Remove Course ::::::");
+                DisplayCourses(); // Show current courses
+
+                Console.WriteLine("Enter the course code to remove (e.g., CS101):");
+                string courseCode = Console.ReadLine().ToUpper();
+
+                // Error handling for empty or null course code
+                if (string.IsNullOrWhiteSpace(courseCode))
+                {
+                    Console.WriteLine("Error: Course code cannot be empty.");
+                    return;
+                }
+                try
+                {
+                    // Check if the course code exists
+                    if (!courses.ContainsKey(courseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{courseCode}' does not exist.");
+                    }
+                    else
+                    {
+                        // Check if there are no enrolled students
+                        if (courses[courseCode].Count == 0)
+                        {
+                            // Remove the course
+                            courses.Remove(courseCode);
+                            Console.WriteLine($"Course '{courseCode}' has been removed successfully.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Error: Course '{courseCode}' cannot be removed because it has enrolled students.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
+                // Ask if the user wants to remove another course or return to the main menu
+                Console.WriteLine("Do you want to remove another course? (yes/no)");
+                string input = Console.ReadLine()?.ToLower();
+
+                if (input != "yes")
+                {
+                    continueremoving = false;
+                    Console.Clear();
+                }
+            }
+        }
+
     }
 }
