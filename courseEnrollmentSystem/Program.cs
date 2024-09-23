@@ -99,10 +99,19 @@
                     else
                     {
                         Console.WriteLine("Enter the course capacity:");
-                        if (!int.TryParse(Console.ReadLine(), out int capacity) || capacity <= 0)
+
+                        int capacity;
+                        while (true) // Loop until a valid capacity is entered
                         {
-                            Console.WriteLine("Error: Please enter a valid capacity.");
-                            return;
+                            if (!int.TryParse(Console.ReadLine(), out capacity) || capacity <= 0)
+                            {
+                                Console.WriteLine("Error: Please enter a valid positive capacity.");
+                                Console.WriteLine("Enter the course capacity:");
+                            }
+                            else
+                            {
+                                break; // Exit the loop if a valid capacity is entered
+                            }
                         }
                         // Ask for confirmation before adding the course
                         Console.WriteLine($"You are about to add the course '{courseCode}' with a capacity of {capacity}. Are you sure? (Y/N)");
