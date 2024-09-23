@@ -179,12 +179,24 @@
                     }
                     else
                     {
+
                         // Check if there are no enrolled students
                         if (courses[courseCode].Count == 0)
                         {
-                            // Remove the course
-                            courses.Remove(courseCode);
-                            Console.WriteLine($"Course '{courseCode}' has been removed successfully.");
+                            // Ask the user if they are sure about removing the course
+                            Console.WriteLine($"Are you sure you want to remove the course '{courseCode}'? (Y/N)");
+                            string confirmation = Console.ReadLine().ToUpper();
+                            if (confirmation == "Y")
+                            {
+                                // Remove the course
+                                courses.Remove(courseCode);
+                                courseCapacities.Remove(courseCode); // Remove capacity data as well if applicable
+                                Console.WriteLine($"Course '{courseCode}' has been removed successfully.");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Action cancelled. Course was not removed.");
+                            }
                         }
                         else
                         {
