@@ -57,7 +57,7 @@
                         break;
                     case "7":
                         Console.Clear();
-                        //FindCoursesWithCommonStudents();
+                        findCoursesWithCommonStudents();
                         break;
                     case "8":
                         Console.Clear();
@@ -510,6 +510,87 @@
             {
                 // Catch any unexpected errors
                 Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+        }
+        static void findCoursesWithCommonStudents()
+        {
+            bool continuereFind = true;
+            while (continuereFind)
+            {
+                try
+                {
+                    Console.WriteLine(":::::: Find Common Students Between Two Courses ::::::");
+
+                    // Get the first course code from the user
+                    Console.WriteLine("Enter the first course code (e.g., CS101):");
+                    string firstCourseCode = Console.ReadLine().ToUpper();
+
+                    // Error handling for empty or null course code
+                    if (string.IsNullOrWhiteSpace(firstCourseCode))
+                    {
+                        Console.WriteLine("Error: Course code cannot be empty.");
+                        return;
+                    }
+
+                    // Get the second course code from the user
+                    Console.WriteLine("Enter the second course code (e.g., MATH202):");
+                    string secondCourseCode = Console.ReadLine().ToUpper();
+
+                    // Error handling for empty or null course code
+                    if (string.IsNullOrWhiteSpace(secondCourseCode))
+                    {
+                        Console.WriteLine("Error: Course code cannot be empty.");
+                        return;
+                    }
+
+                    // Check if both courses exist in the dictionary
+                    if (!courses.ContainsKey(firstCourseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{firstCourseCode}' does not exist.");
+                        return;
+                    }
+                    if (!courses.ContainsKey(secondCourseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{secondCourseCode}' does not exist.");
+                        return;
+                    }
+
+                    // Get the students from both courses
+                    HashSet<string> firstCourseStudents = courses[firstCourseCode];
+                    HashSet<string> secondCourseStudents = courses[secondCourseCode];
+
+                    // Find the intersection of both sets (common students)
+                    HashSet<string> commonStudents = new HashSet<string>(firstCourseStudents);
+                    commonStudents.IntersectWith(secondCourseStudents);
+
+                    // Display the common students
+                    if (commonStudents.Count > 0)
+                    {
+                        Console.WriteLine("Common students between the two courses:");
+                        foreach (var student in commonStudents)
+                        {
+                            Console.WriteLine($"  - {student}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No students are enrolled in both courses.");
+                    }
+                    // Ask if the user wants to remove another course or return to the main menu
+                    Console.WriteLine("Do you want to continue ? (y/n)");
+                    string input = Console.ReadLine()?.ToLower();
+
+                    if (input != "y")
+                    {
+                        continuereFind = false;
+                        Console.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                }
             }
         }
 
