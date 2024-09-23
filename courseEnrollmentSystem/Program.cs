@@ -45,7 +45,7 @@
                         break;
                     case "4":
                         Console.Clear();
-                        //removeStudentFromCourse();
+                        removeStudentFromCourse();
                         break;
                     case "5":
                         Console.Clear();
@@ -306,6 +306,108 @@
 
             }
         }
+        static void removeStudentFromCourse()
+        {
+            bool continueRemoving = true;
+            while (continueRemoving)
+            {
+                try
+                {
+                    Console.WriteLine(":::::: Remove Student from Course ::::::");
+                    DisplayCourses(); // Display available courses
+
+                    // Get and validate the student's name
+                    string studentName = "";
+                    while (true)
+                    {
+                        Console.WriteLine("Enter the student's name:");
+                        studentName = Console.ReadLine();
+
+                        if (!string.IsNullOrWhiteSpace(studentName))
+                        {
+                            break; // Valid input, exit the loop
+                        }
+
+                        Console.WriteLine("Error: Student name cannot be empty. Please try again.");
+                    }
+
+                    // Get and validate the course code
+                    string courseCode = "";
+                    while (true)
+                    {
+                        Console.WriteLine("Enter the course code (e.g., CS101):");
+                        courseCode = Console.ReadLine()?.ToUpper(); // Convert to uppercase
+
+                        if (!string.IsNullOrWhiteSpace(courseCode))
+                        {
+                            break; // Valid input, exit the loop
+                        }
+
+                        Console.WriteLine("Error: Course code cannot be empty. Please try again.");
+                    }
+
+                    // Check if the course exists
+                    if (!courses.ContainsKey(courseCode))
+                    {
+                        Console.WriteLine($"Error: Course '{courseCode}' does not exist. Please try again.");
+                        continue; // Loop back to retry input
+                    }
+
+                    // Check if the student is enrolled in the course
+                    if (!courses[courseCode].Contains(studentName))
+                    {
+                        Console.WriteLine($"Error: Student '{studentName}' is not enrolled in course '{courseCode}'. Please try again.");
+                        continue; // Loop back to retry input
+                    }
+
+                    // Remove the student from the course
+                    courses[courseCode].Remove(studentName);
+                    Console.WriteLine($"Student '{studentName}' has been removed from course '{courseCode}' successfully.");
+
+                    // Check if the course now has space for students on the waitlist
+                    // Ask for confirmation before removing the student
+                    Console.WriteLine($"Are you sure you want to remove student '{studentName}' from course '{courseCode}'? (yes/no)");
+                    string confirmation = Console.ReadLine()?.ToLower();
+
+                    if (confirmation == "yes")
+                    {
+                        // Remove the student from the course
+                        courses[courseCode].Remove(studentName);
+                        Console.WriteLine($"Student '{studentName}' has been removed from course '{courseCode}' successfully.");
+
+                        // Check if the course now has space for students on the waitlist
+                        var studentOnWaitlist = WaitList.FirstOrDefault(w => w.courseCode == courseCode);
+                        if (studentOnWaitlist != default)
+                        {
+                            // Enroll the first student from the waitlist
+                            courses[courseCode].Add(studentOnWaitlist.studentName);
+                            WaitList.Remove(studentOnWaitlist);
+                            Console.WriteLine($"Student '{studentOnWaitlist.studentName}' from the waitlist has been enrolled in course '{courseCode}'.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Student '{studentName}' was not removed from course '{courseCode}'.");
+                    }
+
+                    // Ask if the user wants to continue removing students or return to the main menu
+                    Console.WriteLine("Do you want to continue removing students? (yes/no)");
+                    string input = Console.ReadLine()?.ToLower();
+
+                    if (input != "yes")
+                    {
+                        continueRemoving = false;
+                        Console.Clear();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Catch any unexpected errors
+                    Console.WriteLine($"An error occurred: {ex.Message}. Please try again.");
+                }
+            }
+        }
+
 
     }
 }
