@@ -343,7 +343,6 @@
                 }
             }
         }
-
         static void removeStudentFromCourse()
         {
             bool continueRemoving = true;
@@ -512,7 +511,7 @@
             try
             {
                 Console.WriteLine(":::::: Display All Courses and Their Students ::::::");
-
+                DisplayCourses();
                 // Check if there are any courses in the system
                 if (courses.Count == 0)
                 {
@@ -653,15 +652,14 @@
 
                     // Flag to check if the student was found in any course
                     bool studentFound = false;
+                    List<string> coursesToWithdraw = new List<string>(); // To store courses from which student will be withdrawn
 
-                    // Iterate over all courses and remove the student from each course they are enrolled in
+                    // Iterate over all courses and check if the student is enrolled
                     foreach (var course in courses)
                     {
                         if (course.Value.Contains(studentName)) // Check if the student is enrolled in the course
                         {
-                            course.Value.Remove(studentName); // Remove the student from the course
-                            Console.WriteLine($"Student '{studentName}' has been withdrawn from course '{course.Key}'.");
-
+                            coursesToWithdraw.Add(course.Key); // Add course to the list
                             studentFound = true;
                         }
                     }
@@ -670,7 +668,36 @@
                     {
                         Console.WriteLine($"Student '{studentName}' is not enrolled in any course.");
                     }
-                    Console.WriteLine("Do you want to continue ? (y/n)");
+                    else
+                    {
+                        // Show the user all courses the student is enrolled in and ask for confirmation
+                        Console.WriteLine($"Student '{studentName}' is currently enrolled in the following courses:");
+                        foreach (var course in coursesToWithdraw)
+                        {
+                            Console.WriteLine(course);
+                        }
+
+                        // Ask for confirmation
+                        Console.WriteLine("Are you sure you want to withdraw the student from all of these courses? (y/n)");
+                        string confirm = Console.ReadLine()?.ToLower();
+
+                        if (confirm == "y")
+                        {
+                            // If confirmed, remove the student from all courses
+                            foreach (var courseCode in coursesToWithdraw)
+                            {
+                                courses[courseCode].Remove(studentName);
+                                Console.WriteLine($"Student '{studentName}' has been withdrawn from course '{courseCode}'.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Operation canceled. The student has not been withdrawn from any courses.");
+                        }
+                    }
+
+                    // Ask if the user wants to continue withdrawing students or return to the main menu
+                    Console.WriteLine("Do you want to continue withdrawing students? (y/n)");
                     string input = Console.ReadLine()?.ToLower();
 
                     if (input != "y")
@@ -686,6 +713,7 @@
                 }
             }
         }
+
 
 
     }
