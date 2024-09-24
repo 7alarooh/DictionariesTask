@@ -755,6 +755,7 @@
             WaitList.Add(("Jack", "ENG303"));   // Jack waiting for ENG303
             WaitList.Add(("Alice", "BIO404"));  // Alice waiting for BIO404
             WaitList.Add(("Eva", "ENG303"));    // Eva waiting for ENG303
+            WaitList.Add(("KArim", "MATH202"));    // Eva waiting for ENG303
 
             Console.WriteLine("Startup data initialized.");
         }
@@ -794,6 +795,8 @@
                     Console.WriteLine("  No students on the waitlist.");
                 }
             }
+            string input = Console.ReadLine();
+            Console.Clear();
         }
         //Utility function for getting user input with exit option
         static string GetInput(string prompt)
