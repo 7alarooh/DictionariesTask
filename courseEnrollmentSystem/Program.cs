@@ -6,8 +6,12 @@
         static List<(string studentName, string courseCode)> WaitList = new List<(string, string)>();// Waitlist to store students who are waiting to enroll in a full course
         static Dictionary<string, int> courseCapacities = new Dictionary<string, int>(); // Dictionary to store course capacities
 
+
+
+
         static void Main(string[] args)
         {
+            InitializeStartupData();
             mainMenu();
         }
         static void mainMenu() 
@@ -25,6 +29,7 @@
                 Console.WriteLine("\n 6 .Display all courses and their students");
                 Console.WriteLine("\n 7 .Find courses with common students");
                 Console.WriteLine("\n 8 .Withdraw a Student from All Courses");
+                Console.WriteLine("\n 9 .View Waiting List");
                 Console.WriteLine("\n 0 .singOut");
 
                 string choice = Console.ReadLine();
@@ -62,6 +67,10 @@
                     case "8":
                         Console.Clear();
                         withdrawStudentFromAllCourses();
+                        break;
+                    case "9":
+                        Console.Clear();
+                        viewWaitingList();
                         break;
                     case "0":
                         ExitFlag = true;
@@ -550,6 +559,8 @@
                         }
                     }
                 }
+                string keyOut=Console.ReadLine();
+                Console.Clear();
             }
             catch (Exception ex)
             {
@@ -721,6 +732,66 @@
                 }
             }
         }
+        static void InitializeStartupData()
+        {
+            // Example data: Courses and their enrolled students (cross-over students)
+            courses["CS101"] = new HashSet<string> { "Alice", "Bob", "Charlie" };   // CS101 has Alice, Bob, Charlie
+            courses["MATH202"] = new HashSet<string> { "David", "Eva", "Bob" };     // MATH202 has David, Eva, and Bob (cross-over with CS101)
+            courses["ENG303"] = new HashSet<string> { "Frank", "Grace", "Charlie" };// ENG303 has Frank, Grace, and Charlie (cross-over with CS101)
+            courses["BIO404"] = new HashSet<string> { "Ivy", "Jack", "David" };     // BIO404 has Ivy, Jack, and David (cross-over with MATH202)
+
+            // Set course capacities (varying)
+            courseCapacities["CS101"] = 3;  // CS101 capacity of 3 (currently full)
+            courseCapacities["MATH202"] = 5; // MATH202 capacity of 5 (can accept more students)
+            courseCapacities["ENG303"] = 3;  // ENG303 capacity of 3 (currently full)
+            courseCapacities["BIO404"] = 4;  // BIO404 capacity of 4 (can accept more students)
+
+            // Waitlist for courses (students waiting to enroll in full courses)
+            WaitList.Add(("Helen", "CS101"));   // Helen waiting for CS101
+            WaitList.Add(("Jack", "ENG303"));   // Jack waiting for ENG303
+            WaitList.Add(("Alice", "BIO404"));  // Alice waiting for BIO404
+            WaitList.Add(("Eva", "ENG303"));    // Eva waiting for ENG303
+
+            Console.WriteLine("Startup data initialized.");
+        }
+        static void viewWaitingList()
+        {
+            // Check if the waitlist is empty
+            if (WaitList.Count == 0)
+            {
+                Console.WriteLine("There are no students on the waitlist.");
+                return;
+            }
+
+            // Group students by courseCode
+            var groupedWaitList = WaitList
+                .GroupBy(w => w.courseCode)
+                .ToDictionary(g => g.Key, g => g.Select(w => w.studentName).ToList());
+
+            Console.WriteLine(":::::: Waitlist for Courses ::::::");
+
+            // Iterate through each course's waitlist
+            foreach (var entry in groupedWaitList)
+            {
+                string courseCode = entry.Key;
+                List<string> students = entry.Value;
+
+                Console.WriteLine($"\nCourse: {courseCode}");
+                if (students.Count > 0)
+                {
+                    Console.WriteLine("  Students on waitlist:");
+                    foreach (var student in students)
+                    {
+                        Console.WriteLine($"  - {student}");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("  No students on the waitlist.");
+                }
+            }
+        }
+
 
 
 
