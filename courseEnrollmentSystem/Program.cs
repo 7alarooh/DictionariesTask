@@ -525,7 +525,6 @@
             try
             {
                 Console.WriteLine(":::::: Display All Courses and Their Students ::::::");
-                DisplayCourses();
                 // Check if there are any courses in the system
                 if (courses.Count == 0)
                 {
@@ -801,8 +800,6 @@
 
             return input; // Return the valid input
         }
-
-
 
 
     }
