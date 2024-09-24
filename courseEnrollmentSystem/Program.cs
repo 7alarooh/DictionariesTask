@@ -414,10 +414,7 @@
                         continue; // Loop back to retry input
                     }
 
-                    // Remove the student from the course
-                    courses[courseCode].Remove(studentName);
-                    Console.WriteLine($"Student '{studentName}' has been removed from course '{courseCode}' successfully.");
-
+                    
                     // Check if the course now has space for students on the waitlist
                     // Ask for confirmation before removing the student
                     Console.WriteLine($"Are you sure you want to remove student '{studentName}' from course '{courseCode}'? (y/no)");
