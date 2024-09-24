@@ -92,8 +92,8 @@
                     Console.Clear();
                     Console.WriteLine(":::::: Add New Course ::::::");
                     DisplayCourses();
-                    Console.WriteLine("Enter the course code (e.g., CS101):");
-                    string courseCode = Console.ReadLine().ToUpper();
+                    string courseCode = GetInput("Enter the course code (e.g., CS101) (or type 'exit' to cancel):").ToUpper();
+                    ;
                     // Error handling for empty or null course code
                     if (string.IsNullOrWhiteSpace(courseCode))
                     {
@@ -180,8 +180,8 @@
                 Console.WriteLine(":::::: Remove Course ::::::");
                 DisplayCourses(); // Show current courses
 
-                Console.WriteLine("Enter the course code to remove (e.g., CS101):");
-                string courseCode = Console.ReadLine().ToUpper();
+
+                string courseCode = GetInput("Enter the course code (e.g., CS101) (or type 'exit' to cancel):").ToUpper();
 
                 // Error handling for empty or null course code
                 if (string.IsNullOrWhiteSpace(courseCode))
@@ -359,7 +359,6 @@
                 }
             }
         }
-
         static void removeStudentFromCourse()
         {
             bool continueRemoving = true;
@@ -371,12 +370,11 @@
                     DisplayCourses(); // Display available courses
 
                     // Get and validate the student's name
-                    string studentName = "";
+                    string studentName;
                     while (true)
                     {
                         Console.WriteLine("Enter the student's name:");
-                        studentName = Console.ReadLine();
-
+                        studentName = GetInput("Enter the student's name (or type 'exit' to cancel):");
                         if (!string.IsNullOrWhiteSpace(studentName))
                         {
                             break; // Valid input, exit the loop
@@ -386,26 +384,28 @@
                     }
 
                     // Get and validate the course code
-                    string courseCode = "";
+                    string courseCode;
+                    // Get the course code with error handling
                     while (true)
                     {
-                        Console.WriteLine("Enter the course code (e.g., CS101):");
+                        Console.WriteLine("Enter the course code to enroll the student (e.g., CS101):");
                         courseCode = Console.ReadLine()?.ToUpper(); // Convert to uppercase
 
-                        if (!string.IsNullOrWhiteSpace(courseCode))
+                        if (string.IsNullOrWhiteSpace(courseCode))
                         {
-                            break; // Valid input, exit the loop
+                            Console.WriteLine("Error: Course code cannot be empty. Please try again.");
                         }
-
-                        Console.WriteLine("Error: Course code cannot be empty. Please try again.");
+                        else if (!courses.ContainsKey(courseCode))
+                        {
+                            Console.WriteLine($"Error: Course '{courseCode}' does not exist. Please try again.");
+                        }
+                        else
+                        {
+                            break; // Exit loop once valid course code is entered
+                        }
                     }
 
-                    // Check if the course exists
-                    if (!courses.ContainsKey(courseCode))
-                    {
-                        Console.WriteLine($"Error: Course '{courseCode}' does not exist. Please try again.");
-                        continue; // Loop back to retry input
-                    }
+
 
                     // Check if the student is enrolled in the course
                     if (!courses[courseCode].Contains(studentName))
@@ -471,8 +471,8 @@
                     string courseCode;
                     while (true)
                     {
-                        Console.WriteLine("Enter the course code (e.g., CS101):");
-                        courseCode = Console.ReadLine()?.ToUpper(); // Convert to uppercase
+
+                        courseCode = GetInput("Enter the course code (e.g., CS101) (or type 'exit' to cancel):")?.ToUpper(); // Convert to uppercase
 
                         if (!string.IsNullOrWhiteSpace(courseCode))
                         {
@@ -575,8 +575,7 @@
                     Console.WriteLine(":::::: Find Common Students Between Two Courses ::::::");
 
                     // Get the first course code from the user
-                    Console.WriteLine("Enter the first course code (e.g., CS101):");
-                    string firstCourseCode = Console.ReadLine().ToUpper();
+                    string firstCourseCode = GetInput("Enter the course code (e.g., CS101) (or type 'exit' to cancel):").ToUpper();
 
                     // Error handling for empty or null course code
                     if (string.IsNullOrWhiteSpace(firstCourseCode))
@@ -656,8 +655,7 @@
                     Console.WriteLine(":::::: Withdraw Student from All Courses ::::::");
 
                     // Get the student's name
-                    Console.WriteLine("Enter the student's name:");
-                    string studentName = Console.ReadLine();
+                    string studentName = GetInput("Enter the student's name (or type 'exit' to cancel):");
 
                     // Error handling for empty or null student name
                     if (string.IsNullOrWhiteSpace(studentName))
@@ -787,6 +785,21 @@
                     Console.WriteLine("  No students on the waitlist.");
                 }
             }
+        }
+        //Utility function for getting user input with exit option
+        static string GetInput(string prompt)
+        {
+            Console.WriteLine(prompt);
+            string input = Console.ReadLine();
+
+            // Check if the user wants to exit
+            if (input.ToLower() == "exit")
+            {
+                Console.WriteLine("Exiting the current operation...");
+                return null; // Return null if "exit" is entered
+            }
+
+            return input; // Return the valid input
         }
 
 
