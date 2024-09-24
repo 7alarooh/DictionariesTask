@@ -701,7 +701,17 @@
                             {
                                 courses[courseCode].Remove(studentName);
                                 Console.WriteLine($"Student '{studentName}' has been withdrawn from course '{courseCode}'.");
+                                // Check if the course now has space for students on the waitlist
+                                var studentOnWaitlist = WaitList.FirstOrDefault(w => w.courseCode == courseCode);
+                                if (studentOnWaitlist != default)
+                                {
+                                    // Enroll the first student from the waitlist
+                                    courses[courseCode].Add(studentOnWaitlist.studentName);
+                                    WaitList.Remove(studentOnWaitlist);
+                                    Console.WriteLine($"Student '{studentOnWaitlist.studentName}' from the waitlist has been enrolled in course '{courseCode}'.");
+                                }
                             }
+                           
                         }
                         else
                         {
